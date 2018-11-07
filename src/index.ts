@@ -218,9 +218,8 @@ export class Plugin extends EventEmitter {
                 }
             })
 
-            this.emit('sync:before', table, master)
             this._sync(masterCellWidths, masterCells, slaveCells)
-            this.emit('sync:after', table, master)
+            this.emit('sync', table, master)
         })
     }
 
