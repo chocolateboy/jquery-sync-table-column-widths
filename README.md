@@ -161,7 +161,7 @@ though it may work with older versions.
 
 # VERSION
 
-0.0.1
+0.0.2
 
 # AUTHOR
 
