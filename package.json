@@ -1,6 +1,6 @@
 {
     "name": "jquery-sync-table-column-widths",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A jQuery plugin to synchronize table column widths",
     "main": "dist/index.js",
     "umd:main": "register.js",

@@ -109,15 +109,16 @@ const OPTIONS: Options = {
     debug: false,
 }
 
-class Plugin extends EventEmitter {
+// FIXME temporarily make this a named export, rather than the default export, to
+// work around a bundling issue: https://github.com/developit/microbundle/issues/193
+export class Plugin extends EventEmitter {
     input: Input;
     output: Output;
     masterSelector: MasterSelector;
     debug: Function;
 
-    static register ($: JQueryStatic, options?: Options): Plugin {
-        const klass = this || Plugin
-        const plugin = new klass(options)
+    public static register ($: JQueryStatic, options?: Options): Plugin {
+        const plugin = new this(options)
 
         $.fn.syncColumnWidths = function syncColumnWidths (
             this: JQuery<HTMLElement>,
@@ -130,7 +131,7 @@ class Plugin extends EventEmitter {
         return plugin
     }
 
-    constructor (_options: Options) {
+    public constructor (_options: Options) {
         super()
 
         const options: Options = _.assign({}, OPTIONS, _options || {})
@@ -142,7 +143,7 @@ class Plugin extends EventEmitter {
         this.debug = _.isFunction(debug) ? debug : debug ? defaultDebug : _.noop
     }
 
-    syncColumnWidths ($group: JQuery<HTMLElement>, masterSelector: MasterSelector): void {
+    public syncColumnWidths ($group: JQuery<HTMLElement>, masterSelector: MasterSelector): void {
         let master: HTMLTableElement
         let isMaster: (HTMLTableElement) => boolean
 
@@ -223,7 +224,7 @@ class Plugin extends EventEmitter {
         })
     }
 
-    _sync(
+    private _sync(
         masterCellWidths: MasterCellWidths,
         masterCells: Array<HTMLTableCellElement>,
         slaveCells: Array<HTMLTableCellElement>
@@ -266,6 +267,6 @@ class Plugin extends EventEmitter {
     }
 }
 
-// FIXME use CommonJS exports to work around a microbundle bug:
-// https://github.com/developit/microbundle/issues/193
-module.exports = Plugin
+export function register (jQuery: JQueryStatic, options?: Options): Plugin {
+    return Plugin.register(jQuery, options)
+}

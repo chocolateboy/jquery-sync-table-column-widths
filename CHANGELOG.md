@@ -1,3 +1,7 @@
+## 0.0.3 - 2018-11-07
+
+- temporarily make the default Plugin export a named export to work around a bundling issue
+
 ## 0.0.2 - 2018-11-07
 
 - add typings
