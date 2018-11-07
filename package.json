@@ -2,6 +2,9 @@
     "name": "jquery-sync-table-column-widths",
     "version": "0.0.3",
     "description": "A jQuery plugin to synchronize table column widths",
+    "repository": "chocolateboy/jquery-sync-table-column-widths",
+    "author": "chocolateboy",
+    "license": "Artistic-2.0",
     "main": "dist/index.js",
     "umd:main": "register.js",
     "unpkg": "register.js",
@@ -15,8 +18,6 @@
         "clean": "shx rm -rf ./dist ./register.*",
         "prepublishOnly": "npm run clean && npm run build"
     },
-    "author": "chocolateboy",
-    "license": "Artistic-2.0",
     "files": [
         "dist/index.d.ts",
         "dist/index.js",
