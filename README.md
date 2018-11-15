@@ -55,7 +55,7 @@ import { register } from 'jquery-sync-table-column-widths'
 const jQuery = require('jquery')
 const plugin = register(jQuery, options)
 
-plugin.on('sync:after', table => { ... })
+plugin.on('sync', table => { ... })
 ```
 
 ## Use
