@@ -85,4 +85,5 @@ typings/
 /register.js
 /target/
 temp.*
-/.rpt2_cache
+/.rpt2_cache*/
+/.rts2_cache*/

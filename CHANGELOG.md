@@ -1,3 +1,8 @@
+## 0.3.0 - 2018-11-22
+
+- **Breaking change**:
+   - rename the master-table outlets consumed by slave tables: port/ports -> source/sources
+
 ## 0.2.0 - 2018-11-11
 
 - **Breaking change**:

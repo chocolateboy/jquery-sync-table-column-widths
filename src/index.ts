@@ -93,7 +93,7 @@ function defaultInput (
     cell: HTMLTableCellElement,
     table: HTMLTableElement
 ): string {
-    return $(cell).data('port') || nth($(table).data('ports'), this.index)
+    return $(cell).data('source') || nth($(table).data('sources'), this.index)
 }
 
 // if master is undefined, the first table is used which we get
@@ -210,11 +210,11 @@ export class Plugin extends EventEmitter {
             slaveCells.forEach((cell, index) => {
                 $inputThis.index = index
 
-                const port = getInput.call($inputThis, cell, table)
+                const source = getInput.call($inputThis, cell, table)
 
                 // FIXME don't modify slave tables
-                if (port && !$(cell).data('port')) {
-                    $(cell).data('port', port)
+                if (source && !$(cell).data('source')) {
+                    $(cell).data('source', source)
                 }
             })
 
@@ -240,17 +240,17 @@ export class Plugin extends EventEmitter {
 
             const $masterCell = $(masterCell)
             const $slaveCell = $(slaveCell)
-            const port = $slaveCell.data('port')
+            const source = $slaveCell.data('source')
 
             let masterCellWidth: number
 
-            if (port) {
-                masterCellWidth = masterCellWidths[port]
+            if (source) {
+                masterCellWidth = masterCellWidths[source]
 
                 if (masterCellWidth) {
-                    console.warn(`Found width in master table port (${port}): ${masterCellWidth}`)
+                    console.warn(`Found width in master table port (${source}): ${masterCellWidth}`)
                 } else {
-                    console.warn(`Can't find port in master table: ${port}`)
+                    console.warn(`Can't find port in master table: ${source}`)
                     break
                 }
             } else {
