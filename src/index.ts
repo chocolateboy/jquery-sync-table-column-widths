@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events'
-import * as _           from 'lodash'
+const EventEmitter = require('events')
+const _            = require('lodash')
 
 // FIXME import error: 'sprintf' is not exported by node_modules/sprintf-js/src/sprintf.js
 // import { sprintf } from 'sprintf-js'
