@@ -1,37 +1,37 @@
 {
     "name": "jquery-sync-table-column-widths",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "A jQuery plugin to synchronize table column widths",
     "repository": "chocolateboy/jquery-sync-table-column-widths",
     "author": "chocolateboy",
     "license": "Artistic-2.0",
     "main": "dist/index.js",
-    "umd:main": "register.js",
-    "unpkg": "register.js",
     "module": "dist/index.mjs",
+    "umd:main": "register.js",
     "source": "src/index.ts",
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "npm run build:plugin && npm run build:register",
-        "build:plugin": "microbundle --no-sourcemap --format es,cjs --strict src/index.ts",
-        "build:register": "microbundle --no-sourcemap --format umd --external none -o ./register.js ./src/register.js && shx echo TODO",
-        "clean": "shx rm -rf ./dist ./register.*",
+        "build:plugin": "microbundle --no-compress --strict --format cjs,es",
+        "build:register": "microbundle --no-compress --no-sourcemap --format umd -o ./register.js --name jquerySyncTableColumnWidths ./src/register.js && shx echo TODO",
+        "clean": "shx rm -rf ./dist ./.*cache*",
         "prepublishOnly": "npm run clean && npm run build"
     },
     "files": [
         "dist/index.d.ts",
         "dist/index.js",
-        "dist/index.mjs",
-        "register.js"
+        "dist/index.mjs"
     ],
     "dependencies": {
-        "events": "^3.0.0",
+        "little-emitter": "^0.2.0",
         "lodash": "^4.17.11"
     },
     "devDependencies": {
         "@types/jquery": "^3.3.22",
         "@types/lodash": "^4.14.118",
-        "microbundle": "^0.7.0",
+        "@types/node": "^10.12.18",
+        "@types/sprintf-js": "^1.1.1",
+        "microbundle": "^0.9.0",
         "shx": "^0.3.2",
         "sprintf-js": "^1.1.1"
     },

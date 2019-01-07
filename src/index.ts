@@ -1,22 +1,23 @@
-const EventEmitter = require('events')
-const _            = require('lodash')
-
-// FIXME import error: 'sprintf' is not exported by node_modules/sprintf-js/src/sprintf.js
-// import { sprintf } from 'sprintf-js'
-const { sprintf } = require('sprintf-js')
+import EventEmitter from 'little-emitter'
+import * as _       from 'lodash'
+import * as Sprintf from 'sprintf-js'
 
 type Debug = boolean | Function;
 type Input = typeof defaultInput;
 type Output = typeof defaultOutput;
-type MasterSelector = JQuery.Selector | HTMLTableElement | ((HTMLTableElement) => boolean);
-type MasterCellWidths = { [key: string]: number };
+type MasterSelector = JQuery.Selector | HTMLTableElement | ((table: HTMLTableElement) => boolean);
+type MasterCellWidths = { [key: string]: number | undefined };
 
 type Options = {
-    input?: Input;
-    output?: Output;
-    master?: MasterSelector;
     debug?: Debug;
+    input?: Input;
+    master?: MasterSelector;
+    output?: Output;
 };
+
+type State = {
+    [key: string]: number;
+}
 
 declare global {
     interface JQuery<TElement = HTMLElement> {
@@ -40,11 +41,11 @@ function cells (table: HTMLTableElement): Array<HTMLTableCellElement> {
     // return $cells.get() as unknown as Array<HTMLTableCellElement>
     // FIXME work around TypeScript error:
     // src/index.ts(40,28): semantic error TS2304 Cannot find name 'unknown'.
-    return $cells.get() as any
+    return $cells ? ($cells.get() as any) : []
 }
 
 // return the nth (0-based) item from a comma-separated string list
-function nth (list: string, index: number): string {
+function nth (list: string, index: number): string | void {
     if (list && list.match(/\S/)) {
         return list.trim().split(/\s*,\s*/)[index]
     }
@@ -53,7 +54,7 @@ function nth (list: string, index: number): string {
 const defaultDebug = console.warn.bind(console)
 
 function defaultOutput (
-    this: { index: number; state: Object },
+    this: { index: number; state: State },
     cell: HTMLTableCellElement,
     table: HTMLTableElement
 ): string {
@@ -72,11 +73,11 @@ function defaultOutput (
             const name = _.kebabCase(text)
             const count = state[name] = (state[name] || 0) + 1
             const index = this.index
-            const id = sprintf('%s-%d', name, count)
+            const id = Sprintf.sprintf('%s-%d', name, count)
 
-            port = sprintf(template, {
+            port = Sprintf.sprintf(template, {
                 count,
-                index: this.index,
+                index,
                 name,
                 id,
                 pos: this.index + 1,
@@ -89,7 +90,7 @@ function defaultOutput (
 }
 
 function defaultInput (
-    { index: number, state: Object },
+    this: { index: number; state: State },
     cell: HTMLTableCellElement,
     table: HTMLTableElement
 ): string {
@@ -98,15 +99,8 @@ function defaultInput (
 
 // if master is undefined, the first table is used which we get
 // via a predicate which returns true
-function defaultMaster (table: HTMLTableElement): boolean {
+function defaultMaster (_table: HTMLTableElement): boolean {
     return true
-}
-
-const OPTIONS: Options = {
-    input: defaultInput,
-    output: defaultOutput,
-    master: defaultMaster,
-    debug: false,
 }
 
 // FIXME temporarily make this a named export, rather than the default export, to
@@ -131,25 +125,21 @@ export class Plugin extends EventEmitter {
         return plugin
     }
 
-    public constructor (_options: Options) {
+    public constructor (_options?: Options) {
         super()
 
-        const options: Options = _.assign({}, OPTIONS, _options || {})
-        const { debug } = options
+        const options: Options = _options || {}
+        const debug = options.debug || false
 
-        this.input = options.input
-        this.output = options.output
-        this.masterSelector = options.master
+        this.input = options.input || defaultInput
+        this.output = options.output || defaultOutput
+        this.masterSelector = options.master || defaultMaster
         this.debug = _.isFunction(debug) ? debug : debug ? defaultDebug : _.noop
     }
 
-    public syncColumnWidths ($group: JQuery<HTMLElement>, masterSelector: MasterSelector): void {
-        let master: HTMLTableElement
-        let isMaster: (HTMLTableElement) => boolean
-
-        if (!masterSelector) {
-            masterSelector = this.masterSelector
-        }
+    public syncColumnWidths ($group: JQuery<HTMLElement>, masterSelector = this.masterSelector): void {
+        let master: HTMLTableElement | undefined
+        let isMaster: (table: HTMLTableElement) => boolean
 
         if (_.isString(masterSelector)) {
             isMaster = table => $(table).is(masterSelector)
@@ -165,9 +155,9 @@ export class Plugin extends EventEmitter {
             return
         }
 
-        const slaveTables = []
+        const slaveTables: Array<HTMLTableElement> = []
 
-        $tables.each(function (this: HTMLTableElement, index) {
+        $tables.each(function (this: HTMLTableElement) {
             const table = this
 
             if (!master && isMaster(table)) {
@@ -185,7 +175,6 @@ export class Plugin extends EventEmitter {
 
         const masterCells = cells(master)
         const masterCellWidths: MasterCellWidths = {}
-        const outputState = {}
         const getInput = this.input
         const getOutput = this.output
         const $outputThis = { index: -1, state: {} }
@@ -242,7 +231,7 @@ export class Plugin extends EventEmitter {
             const $slaveCell = $(slaveCell)
             const source = $slaveCell.data('source')
 
-            let masterCellWidth: number
+            let masterCellWidth
 
             if (source) {
                 masterCellWidth = masterCellWidths[source]
@@ -261,11 +250,11 @@ export class Plugin extends EventEmitter {
             const slaveCellWidth = $slaveCell.width()
             this.debug(`master (${masterCellWidth}) -> slave (${slaveCellWidth})`)
 
-            $slaveCell.width(masterCellWidth)
+            $slaveCell.width(masterCellWidth!)
         }
     }
 }
 
-export function register (jQuery: JQueryStatic, options?: Options): Plugin {
+export function register (jQuery: JQueryStatic, options: Options): Plugin {
     return Plugin.register(jQuery, options)
 }
