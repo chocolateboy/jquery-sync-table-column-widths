@@ -1,6 +1,7 @@
+import 'core-js/fn/string/repeat' // XXX required by sprintf-js for IE11 support
 import EventEmitter from 'little-emitter'
-import * as _       from 'lodash'
-import * as Sprintf from 'sprintf-js'
+import _            from 'lodash'
+import Sprintf      from 'sprintf-js'
 
 type Debug = boolean | Function;
 type Input = typeof defaultInput;
@@ -105,7 +106,7 @@ function defaultMaster (_table: HTMLTableElement): boolean {
 
 // FIXME temporarily make this a named export, rather than the default export, to
 // work around a bundling issue: https://github.com/developit/microbundle/issues/193
-export class Plugin extends EventEmitter {
+export default class Plugin extends EventEmitter {
     input: Input;
     output: Output;
     masterSelector: MasterSelector;
@@ -157,8 +158,8 @@ export class Plugin extends EventEmitter {
 
         const slaveTables: Array<HTMLTableElement> = []
 
-        $tables.each(function (this: HTMLTableElement) {
-            const table = this
+        $tables.each(function (this: HTMLElement) {
+            const table = this as HTMLTableElement
 
             if (!master && isMaster(table)) {
                 master = table
@@ -183,7 +184,8 @@ export class Plugin extends EventEmitter {
         masterCells.forEach((cell, index) => {
             $outputThis.index = index
 
-            const port = getOutput.call($outputThis, cell, master)
+            // FIXME master type should have been narrowed to exclude undefined
+            const port = getOutput.call($outputThis, cell, master!)
 
             if (port) {
                 masterCellWidths[port] = $(cell).width()
@@ -253,8 +255,4 @@ export class Plugin extends EventEmitter {
             $slaveCell.width(masterCellWidth!)
         }
     }
-}
-
-export function register (jQuery: JQueryStatic, options: Options): Plugin {
-    return Plugin.register(jQuery, options)
 }

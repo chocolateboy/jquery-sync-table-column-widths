@@ -1,7 +1,9 @@
-## 0.3.2 - 2019-01-07
+## 0.4.0 - 2019-01-10
 
+- **Breaking change**:
+   - remove the (incomplete) UMD build (`jquery-sync-table-column-widths/register`).
+   - remove the redundant `register` export
 - remove `require`s from the ESM build
-- shrink the event-emitter dependency
 
 ## 0.3.1 - 2019-01-07
 

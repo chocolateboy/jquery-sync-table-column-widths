@@ -18,7 +18,6 @@
   - [Options](#options)
 - [EXPORTS](#exports)
   - [Plugin (default)](#plugin-default)
-  - [register](#register)
 - [METHODS](#methods)
   - [JQuery#syncColumnWidths](#jquerysynccolumnwidths)
 - [DEVELOPMENT](#development)
@@ -44,16 +43,10 @@ jquery-sync-table-column-widths - a jQuery plugin to synchronize table column wi
 ## Load
 
 ```javascript
-// register against window.jQuery or window.$ with default options
-
-import 'jquery-sync-table-column-widths/register'
-
-// or customize:
-
-import { register } from 'jquery-sync-table-column-widths'
+import Plugin from 'jquery-sync-table-column-widths'
 
 const jQuery = require('jquery')
-const plugin = register(jQuery, options)
+const plugin = Plugin.register(jQuery, options)
 
 plugin.on('sync', table => { ... })
 ```
@@ -120,16 +113,6 @@ import Plugin from 'jquery-sync-column-widths'
 Plugin.register(jQuery, options)
 ```
 
-## register
-
-**Signature**: register(JQueryStatic: jQuery, [Options](#options)) => [Plugin](#plugin)
-
-```javascript
-import Plugin from 'jquery-sync-column-widths'
-
-Plugin.register(jQuery, options)
-```
-
 # METHODS
 
 ## JQuery#syncColumnWidths
@@ -144,9 +127,9 @@ Plugin.register(jQuery, options)
 
 The following NPM scripts are available:
 
-- build:plugin - compile the plugin and save it to the target directory
-- build:register - compile the UMD build and save it to the root directory as register.js
-- clean - remove the target directory and its contents
+- build - compile the plugin and package it for release
+- clean - remove temporary files and build artifacts
+- test - run the test suite
 
 </details>
 
@@ -161,7 +144,7 @@ though it may work with older versions.
 
 # VERSION
 
-0.3.2
+0.4.0
 
 # AUTHOR
 
@@ -169,7 +152,7 @@ though it may work with older versions.
 
 # COPYRIGHT AND LICENSE
 
-Copyright © 2018 by chocolateboy.
+Copyright © 2018-2019 by chocolateboy.
 
 This is free software; you can redistribute it and/or modify it under the
 terms of the [Artistic License 2.0](http://www.opensource.org/licenses/artistic-license-2.0.php).
