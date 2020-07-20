@@ -1,10 +1,9 @@
 # jquery-sync-table-column-widths
 
-[![Build Status](https://secure.travis-ci.org/chocolateboy/jquery-sync-table-column-widths.svg)](http://travis-ci.org/chocolateboy/jquery-sync-table-column-widths)
-[![NPM Version](http://img.shields.io/npm/v/jquery-sync-table-column-widths.svg)](https://www.npmjs.org/package/jquery-sync-table-column-widths)
+[![Build Status](https://travis-ci.org/chocolateboy/jquery-sync-table-column-widths.svg)](https://travis-ci.org/chocolateboy/jquery-sync-table-column-widths)
+[![NPM Version](https://img.shields.io/npm/v/jquery-sync-table-column-widths.svg)](https://www.npmjs.org/package/jquery-sync-table-column-widths)
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- toc -->
 
 - [NAME](#name)
 - [INSTALLATION](#installation)
@@ -28,7 +27,7 @@
 - [AUTHOR](#author)
 - [COPYRIGHT AND LICENSE](#copyright-and-license)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- tocstop -->
 
 # NAME
 
@@ -152,7 +151,7 @@ though it may work with older versions.
 
 # COPYRIGHT AND LICENSE
 
-Copyright © 2018-2019 by chocolateboy.
+Copyright © 2018-2020 by chocolateboy.
 
 This is free software; you can redistribute it and/or modify it under the
-terms of the [Artistic License 2.0](http://www.opensource.org/licenses/artistic-license-2.0.php).
+terms of the [Artistic License 2.0](https://www.opensource.org/licenses/artistic-license-2.0.php).
